@@ -1,0 +1,5 @@
+
+Fault: 21-08-2020 13:54:02 - Не корректная директория сайта
+file D:\1OSPanel\domains\shop.my\core\base\controller\RouteController.php
+In line 91
+

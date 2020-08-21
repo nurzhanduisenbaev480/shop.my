@@ -1,0 +1,4 @@
+<div>Pole</div>
+<?=$header;?>
+<?=$content;?>
+<?=$footer;?>

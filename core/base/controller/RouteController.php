@@ -2,30 +2,16 @@
 
 namespace core\base\controller;
 
-use core\base\exception\RouteException;
+use core\base\exceptions\RouteException;
 use core\base\settings\Settings;
 
 class RouteController extends BaseController
 {
-    /**
-     * @var
-     */
-    static private $_instance;
+    use Singleton;
     /**
      * @var
      */
     protected $routes;
-
-    /**
-     * @return RouteController
-     * @throws RouteException
-     */
-    static public function getInstance(){
-        if (self::$_instance instanceof self){
-            return self::$_instance;
-        }
-        return self::$_instance = new self;
-    }
 
     /**
      * RouteController constructor.
@@ -37,6 +23,7 @@ class RouteController extends BaseController
         if (strrpos($address, '/') === strlen($address) - 1 && strrpos($address, '/') !== 0){
             // strrpos() находит позицию последнего совпадения
             // strpos() находит позицию первого совпадения
+            $this->redirect(rtrim($address, '/'), 301);
 
         }
         $path = substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], 'index.php'));
@@ -44,7 +31,7 @@ class RouteController extends BaseController
         if ($path === PATH){
             $this->routes = Settings::get('routes');
             if (!$this->routes){
-                throw new RouteException('Сайт находится в техническом обслуживании');
+                throw new RouteException('Отсуствуют маршруты в базовых настройках', 1);
             }
             //Интернет магазин с нуля на php Выпуск №6 контроллер системы маршрутов часть 1
             $route = '';
@@ -101,11 +88,7 @@ class RouteController extends BaseController
 //            echo $this->controller;
 
         }else{
-            try {
-                throw new \Exception('Не корректная директория сайта');
-            }catch (\Exception $exception){
-                exit($exception->getMessage());
-            }
+            throw new RouteException('Не корректная директория сайта', 1);
         }
     }
 
@@ -134,11 +117,4 @@ class RouteController extends BaseController
         return;
     }
 
-    /**
-     *
-     */
-    private function __clone()
-    {
-        // TODO: Implement __clone() method.
-    }
 }
