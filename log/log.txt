@@ -3,3 +3,19 @@ Fault: 21-08-2020 13:54:02 - Не корректная директория са
 file D:\1OSPanel\domains\shop.my\core\base\controller\RouteController.php
 In line 91
 
+Fault: 21-08-2020 14:00:14 - Method core\admin\controller\IndexController::request() does not exist
+file D:\1OSPanel\domains\shop.my\core\base\controller\BaseController.php
+In line 36
+
+Fault: 21-08-2020 14:00:17 - Неверное имя файла для подключения - core/plugins/catalog/IphoneController
+file D:\1OSPanel\domains\shop.my\core\base\settings\internal_settings.php
+In line 29
+
+Fault: 21-08-2020 14:01:01 - Неверное имя файла для подключения - core/plugins/catalog/IphoneController
+file D:\1OSPanel\domains\shop.my\core\base\settings\internal_settings.php
+In line 29
+
+Fault: 21-08-2020 14:01:02 - Неверное имя файла для подключения - core/plugins/catalog/IphoneController
+file D:\1OSPanel\domains\shop.my\core\base\settings\internal_settings.php
+In line 29
+

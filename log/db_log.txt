@@ -1,0 +1,8 @@
+Fault: 21-08-2020 14:12:12 - Ошибка подключение к базе данных: 1049 Unknown database 'shopmy2'
+file D:\1OSPanel\domains\shop.my\core\base\model\BaseModel.php
+In line 19
+
+Fault: 21-08-2020 14:12:13 - Ошибка подключение к базе данных: 1049 Unknown database 'shopmy2'
+file D:\1OSPanel\domains\shop.my\core\base\model\BaseModel.php
+In line 19
+
