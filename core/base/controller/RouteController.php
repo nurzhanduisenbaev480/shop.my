@@ -5,22 +5,32 @@ namespace core\base\controller;
 use core\base\exception\RouteException;
 use core\base\settings\Settings;
 
-class RouteController
+class RouteController extends BaseController
 {
+    /**
+     * @var
+     */
     static private $_instance;
-
+    /**
+     * @var
+     */
     protected $routes;
-    protected $controller;
-    protected $inputMethod;
-    protected $outputMethod;
-    protected $parameters;
 
+    /**
+     * @return RouteController
+     * @throws RouteException
+     */
     static public function getInstance(){
         if (self::$_instance instanceof self){
             return self::$_instance;
         }
         return self::$_instance = new self;
     }
+
+    /**
+     * RouteController constructor.
+     * @throws RouteException
+     */
     private function __construct()
     {
         $address = $_SERVER['REQUEST_URI'];
@@ -38,16 +48,14 @@ class RouteController
             }
             //Интернет магазин с нуля на php Выпуск №6 контроллер системы маршрутов часть 1
             $route = '';
-            if (strpos($address,$this->routes['admin']['alias']) == strlen(PATH)){
+            $url = explode('/', substr($address, strlen(PATH)));
+            if ($url[0] && $url[0] === $this->routes['admin']['alias']){
                 // admin side
-                $url = explode('/', substr($address, strlen(PATH . $this->routes['admin']['alias']) + 1));
-                //pa($url);
-                //echo $_SERVER['DOCUMENT_ROOT'] . PATH . $this->routes['plugins']['path'] . $url[0];
+                array_shift($url);
                 if ($url[0] && is_dir($_SERVER['DOCUMENT_ROOT'] . PATH . $this->routes['plugins']['path'] . $url[0])){
                     $plugin = array_shift($url);
 
                     $pluginSettings = $this->routes['settings']['path'] . ucfirst($plugin . 'Settings');
-                    echo $pluginSettings;
                     if (file_exists($_SERVER['DOCUMENT_ROOT'] . PATH . $pluginSettings . '.php')){
                         $pluginSettings = str_replace('/', '\\', $pluginSettings);
                         $this->routes = $pluginSettings::get('routes');
@@ -65,14 +73,11 @@ class RouteController
 
             }else{
                 // user side
-                $url = explode('/', substr($address, strlen(PATH)));
                 $this->controller = $this->routes['user']['path'];
                 $hrUrl = $this->routes['user']['hrUrl'];
                 $route = 'user';
             }
             $this->createRoute($route, $url);
-
-            pa($url);
             if ($url[1]){
                 $count = count($url);
                 $key = '';
@@ -92,9 +97,8 @@ class RouteController
                     }
                 }
             }
-            pa($this->parameters);
-            echo $this->controller;
-            exit();
+//            pa($this->parameters);
+//            echo $this->controller;
 
         }else{
             try {
@@ -104,6 +108,11 @@ class RouteController
             }
         }
     }
+
+    /**
+     * @param $env
+     * @param $url
+     */
     private function createRoute($env, $url){ // env - user:admin, url -  Адресная строка
         $route = [];
 //        echo $this->routes[$env]['routes'][$url[0]];
@@ -124,6 +133,10 @@ class RouteController
 
         return;
     }
+
+    /**
+     *
+     */
     private function __clone()
     {
         // TODO: Implement __clone() method.

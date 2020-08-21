@@ -1,4 +1,7 @@
 <?php
+
+use core\base\exceptions\RouteException;
+
 defined('VG_ACCESS') or die('Access denied');
 
 const TEMPLATES = 'templates/default/';
