@@ -7,6 +7,18 @@ class ShopSettings
 {
     static private $_instance;
     private $baseSettings;
+    private $templateArr = [
+        'text' => ['price', 'short'],
+        'textarea' => ['goods_content']
+    ];
+    private $routes = [
+        'plugins' => [
+            'dir' => false,
+            'routes' => [
+
+            ]
+        ],
+    ];
     private function __construct()
     {
     }
@@ -24,13 +36,16 @@ class ShopSettings
         self::$_instance = new self;
         self::$_instance->baseSettings = Settings::instance();
         $baseProperties = self::$_instance->baseSettings->clueProperties(get_class());
-
+        self::$_instance->setProperty($baseProperties);
         return self::$_instance;
     }
+    protected function setProperty($properties){
+        if ($properties){
+            foreach ($properties as $name => $property){
+                $this->$name = $property;
+            }
+        }
+    }
 
-    private $templateArr = [
-        'text' => ['price', 'short'],
-        'textarea' => ['goods_content']
-    ];
 
 }

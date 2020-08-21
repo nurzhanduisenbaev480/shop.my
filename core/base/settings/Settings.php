@@ -7,22 +7,26 @@ class Settings
     static private $_instance;
     private $routes = [
         'admin' => [
-            'name' => 'admin',
+            'alias' => 'admin',
             'path' => 'core/admin/controller/',
-            'hrUrl' => false
+            'hrUrl' => false,
+            'routes' => [
+                'product' => ''
+            ]
         ],
         'settings' => [
             'path' => 'core/base/settings/'
         ],
         'plugins' => [
-            'path' => 'core/base/plugins/',
-            'hrUrl' => false
+            'path' => 'core/plugins/',
+            'hrUrl' => false,
+            'dir' => false
         ],
         'user' => [
             'path' => 'core/user/controller/',
             'hrUrl' => true,
             'routes' => [
-
+                'catalog' => 'site/create/id'
             ]
         ],
         'default' => [
@@ -57,10 +61,31 @@ class Settings
         foreach ($this as $propertyName => $propertyValue){
             $property = $class::get($propertyName);
             if (is_array($property) && is_array($propertyValue)){
-//                $newProperty = array_merge_recursive($this->$propertyName, $property);
-                $baseProperties[$propertyName] = array_replace_recursive($this->$propertyName, $property);
-                // https://www.youtube.com/watch?v=Mj3mIdnVBwU&list=PLfWxkvC096mJzCJr7yQHCBM7IsM-pniPD&index=6 1:00:00
+                $baseProperties[$propertyName] = $this->arrayMergeRecursive($this->$propertyName, $property);
+                continue;
+            }
+            if (!$property) $baseProperties[$propertyName] = $this->$propertyName;
+        }
+        return $baseProperties;
+    }
+    public function arrayMergeRecursive(){
+        $arrays = func_get_args();
+        $base = array_shift($arrays);
+        foreach ($arrays as $array){
+            foreach ($array as $key => $value){
+                if (is_array($value) && is_array($base[$key])){
+                    $base[$key] = $this->arrayMergeRecursive($base[$key], $value);
+                }else{
+                    if (is_int($key)){
+                        if (!in_array($value, $base)){
+                            array_push($base, $value);
+                        }
+                        continue;
+                    }
+                    $base[$key] = $value;
+                }
             }
         }
+        return $base;
     }
 }

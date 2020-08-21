@@ -2,7 +2,7 @@
 defined('VG_ACCESS') or die('Access denied');
 
 const TEMPLATES = 'templates/default/';
-const ADMIN_TEMPLATES = 'core/admin/views/';
+const ADMIN_TEMPLATES = 'core/admin/view/';
 
 const COOKIE_VERSION    = '1.0.0';
 const CRYPT_KEY         = '';
